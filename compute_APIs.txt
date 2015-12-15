@@ -1,3 +1,6 @@
+####3samuelthomasster has edited this file##########
+
+
 ##querying for a token##
 
 curl -s -X POST "https://api.jiocloudservices.com:5000/v2.0/tokens" -H "Content-Type: application/json" -d '{"auth": {"tenantName": "jiocloud_product_mgmt", "passwordCredentials": {"username": "Samuel.Thomas", "password": "Welc0me1"}}}' --digest | python -m json.tool 
