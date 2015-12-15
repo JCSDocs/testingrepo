@@ -1,0 +1,79 @@
+##querying for a token##
+
+curl -s -X POST "https://api.jiocloudservices.com:5000/v2.0/tokens" -H "Content-Type: application/json" -d '{"auth": {"tenantName": "jiocloud_product_mgmt", "passwordCredentials": {"username": "Samuel.Thomas", "password": "Welc0me1"}}}' --digest | python -m json.tool 
+
+
+
+Token id ==5ac2db1ea7004f5693ed31d3e3a9df0d
+tenantname=5a4bea22675644dd8ba1439a55f566ce e5a76bef96e44b1aba979b9918e05271
+
+## list of images##
+curl  -s -X GET https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/images/detail -H "X-Auth-Token:83e36a7b5cf74527a2cb952ee07f9362"  |python -m json.tool >> il.txt
+
+
+curl 'https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/os-keypairs' -X POST -H "Accept: application/json"  -H "X-Auth-Token:83e36a7b5cf74527a2cb952ee07f9362" -d '{"keypair":{"name":"New_KeyPairST2del"}}' |python -m json.tool >> KP2.pem
+
+## list of flavors##
+curl -s "https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/flavors/detail" -X GET -H "X-Auth-Token:2d188fcdee2d4782af00fb9ff9b1baf4" |python -m json.tool >> cred1s.txt
+
+##list of networks ##
+curl -i https://api.jiocloudservices.com:9696/v2.0/networks -X GET -H "X-Auth-Token:346bb672e8ab4067a17a01e7f907cb08" >> cred1s.txt
+
+## View network details ##
+curl -i https://api.jiocloudservices.com:9696/v2.0/networks/9857a2e7-e10e-4ef6-aa49-94d32fe3b800 -X GET -H "X-Auth-Token:346bb672e8ab4067a17a01e7f907cb08" 
+
+## creating a server##
+curl -i "https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/os-volumes_boot" -X POST -H "A
+
+
+curl -i 'https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/servers' -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token: ad260541d69f4ebd8f2b6b43dcd9314f" -d '{"server":{"name":"centOS6","imageRef":"5d246189-a666-470c-8cee-36ee489cbd9e","flavorRef": "8b1b17e5-55a9-46b7-90c3-57e1c1696223","max_count": 1, "min_count": 1, "key_name": "connect2JCS", "networks": [{"uuid":"cd7b10fe-5505-45b1-9744-d307d8a73f62"}]}}'
+
+##Terminating a server##
+curl -i https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/servers/27e405f6-b195-46a4-9919-646d6595f020 -X DELETE -H "Accept: application/json" -H "X-Auth-Project-Id:jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:c5cb73b240694f97a9e51a59681df423"
+
+## View the list of subnets ##
+curl -i https://api.jiocloudservices.com:9696/v2.0/subnets -X GET -H "X-Auth-Token:79471f8518534b0898916e2b6a240810" 
+
+##creating an internal network (one-time activity)##
+curl -i "https://api.jiocloudservices.com:9696/v2.0/networks"  -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:1426af42c17644768e06c6bbc8eef798" -d '{"network": {"name": "internal","admin_state_up": true}}'
+
+##creating a subnet in the internal network ##
+curl -i "https://api.jiocloudservices.com:9696/v2.0/subnets"  -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:1426af42c17644768e06c6bbc8eef798" -d '{"subnet": {"network_id": "cd7b10fe-5505-45b1-9744-d307d8a73f62", "ip_version": 4, "cidr": "10.0.0.1"}}
+
+##Creating a floating ip usig the external network ##
+curl -i  https://api.jiocloudservices.com:9696/v2.0/floatingips -X POST -H "X-Auth-Token:42a5f064c2c649f6a602c8d4f6ce2397" -H "Accept: application/json" -H +
+"X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -d '{"floatingip":{"floating_network_id":"9857a2e7-e10e-4ef6-aa49-94d32fe3b800"}}'
+
+##View the list of servers##
+curl -i https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/servers/detail -X GET "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:346bb672e8ab4067a17a01e7f907cb08"
+
+##Assigning the floating IP to the server##
+curl -i 'https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/servers/159f4ce7-8efa-4f23-9be5-e778a3e8972d/action' -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token: 46a24ecf0da54e33859881ce26ccd0c6" -d '{"addFloatingIp": {"address": "49.40.64.179"}}'
+
+##Viewing the list of security groups## 
+curl -i http://10.135.63.7:9696/v2.0/security-groups -X GET -H "X-Auth-Token:11b3ebaeac5a45d2b5582eee73de8ad1" -H "Accept: application/json" -H "X-Auth-Project-Id: iitr" -H "Content-Type: application/json"
+
+##creating a tcp ingress rule that allows all ports (similarly ICMP and ssh port 22 were also added to reach the servers)##
+curl -i https://api.jiocloudservices.com:9696/v2.0/security-group-rules -X POST -H "X-Auth-Token:1ca25bc464ac44ff9df15b25ca9df948" -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -d '{"security_group_rule": {"direction": "ingress","ethertype": "IPv4", "protocol": "tcp", "port_range_min": "1", "port_range_max": "65535", "remote_ip_prefix":"0.0.0.0/0", "security_group_id":"47ae8e8a-a48f-4d2b-8b48-3d174aa13ab2"}}'
+
+##creating a security group rule (not recommended to run)##
+curl -i https://api.jiocloudservices.com:9696/v2.0/security-group-rules/3815-4791-a2fe-833f09796406 -X DELETE -H "X-Auth-Token:1ca25bc464ac44ff9df15b25ca9df948" -H "Accept: application/json" -H "X-Auth-Project-Id: demo" -H "Content-Type: application/json"
+
+##creating a new keypair ##
+curl 'https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/os-keypairs' -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:2d188fcdee2d4782af00fb9ff9b1baf4" -d '{"keypair":{"name":"New_KeyPairST"}}' -O
+
+## creating a server with a keypair ## 
+curl -i https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/os-volumes_boot -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:4083b5b3800747c886f94ad6f9e6cf5b" -d '{"server":{"name":"testbootfromimage_st2","imageRef":"","block_device_mapping_v2": [{"boot_index": "0", "uuid": "5d246189-a666-470c-8cee-36ee489cbd9e", "source_type": "image", "volume_size": "10", "destination_type": "volume", "delete_on_termination": true}], "flavorRef": "da9ba7b5-be67-4a62-bb35-a362e05ba2f2 ","max_count": 1, "min_count": 1, "key_name": "default_ST","networks": [{"uuid":"cd7b10fe-5505-45b1-9744-d307d8a73f62"}]}}'
+
+##creating details of a server ##
+curl -i 'https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/servers/ba9da23a-6df3-4ebe-839e-525449b79f16' -X GET -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token: 1ca25bc464ac44ff9df15b25ca9df948" 
+
+
+
+curl -i "https://api.jiocloudservices.com:8774/v2/5a4bea22675644dd8ba1439a55f566ce/os-volumes_boot" -X POST -H "Accept: application/json" -H "X-Auth-Project-Id: jiocloud_product_mgmt" -H "Content-Type: application/json" -H "X-Auth-Token:e5a76bef96e44b1aba979b9918e05271" -d "{\"server\":{\"name\":\"testbootfromimage_st3\",\"imageRef\":\"\",\"block_device_mapping_v2\": [{\"boot_index\": \"0\", \"uuid\": \"5d246189-a666-470c-8cee-36ee489cbd9e\", \"source_type\": \"image\", \"volume_size\": \"10\", \"destination_type\": \"volume\", \"delete_on_termination\": \"true\"}], \"flavorRef\": \"342a1fc6-0f15-41dc-966a-70f449f582fb\",\"max_count\": \"1\", "\min_count\": \"1\", \"key_name\": \"default_ST\",\"networks\": [{\"uuid\":\"cd7b10fe-5505-45b1-9744-d307d8a73f62\"}]}}"
+
+
+$ curl -O http://www.gnu.org/software/gettext/manual/html_node/index.html -O http://www.gnu.org/software/gettext/manual/gettext.html
+
+----------------------------------
+Adding more lines of API commands.
